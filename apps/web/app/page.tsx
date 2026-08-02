@@ -1,65 +1,170 @@
-import Image from "next/image";
+"use client";
+
+import { motion } from "framer-motion";
+import {
+  ArrowRight,
+  Bot,
+  Boxes,
+  Code2,
+  Link2,
+  Send,
+  WalletCards,
+} from "lucide-react";
+import { ChainSpanScene } from "@/components/hero/chainspan-scene";
+
+const features = [
+  {
+    title: "Wallet",
+    text: "Secure, non-custodial wallet connectivity for Web3.",
+    icon: WalletCards,
+  },
+  {
+    title: "Transactions",
+    text: "Send, monitor and verify on-chain activity.",
+    icon: Send,
+  },
+  {
+    title: "Cross-Chain Bridge",
+    text: "Track asset movement across multiple EVM networks.",
+    icon: Link2,
+  },
+  {
+    title: "Developer Tools",
+    text: "Build and review blockchain-facing applications.",
+    icon: Code2,
+  },
+  {
+    title: "AI Engineering",
+    text: "AI-first execution with rigorous human review.",
+    icon: Bot,
+  },
+];
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
+    <main className="relative min-h-screen overflow-hidden bg-[#02040a] text-white">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(37,99,235,0.18),transparent_32%),radial-gradient(circle_at_75%_25%,rgba(124,58,237,0.14),transparent_25%)]" />
+
+      <ChainSpanScene />
+
+      <div className="relative z-10 mx-auto flex min-h-screen max-w-[1500px] flex-col px-6 lg:px-10">
+        <header className="flex h-24 items-center justify-between">
+          <a href="#" className="flex items-center gap-3">
+            <span className="flex size-10 items-center justify-center rounded-xl border border-blue-400/30 bg-blue-500/10 shadow-[0_0_30px_rgba(59,130,246,0.2)] backdrop-blur-xl">
+              <Boxes className="size-5 text-blue-400" />
+            </span>
+            <span className="text-xl font-semibold tracking-tight">
+              ChainSpan
+            </span>
           </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+
+          <nav className="hidden items-center gap-9 text-sm text-zinc-300 lg:flex">
+            <a className="transition hover:text-white" href="#platform">
+              Platform
+            </a>
+            <a className="transition hover:text-white" href="#ecosystem">
+              Ecosystem
+            </a>
+            <a className="transition hover:text-white" href="#developers">
+              Developers
+            </a>
+            <a className="transition hover:text-white" href="#docs">
+              Documentation
+            </a>
+          </nav>
+
+          <button className="group flex h-11 items-center gap-2 rounded-xl border border-blue-300/30 bg-gradient-to-r from-blue-600 to-violet-600 px-5 text-sm font-medium shadow-[0_0_32px_rgba(59,130,246,0.35)] transition hover:scale-[1.03]">
+            Launch App
+            <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+          </button>
+        </header>
+
+        <section className="flex flex-1 flex-col items-center justify-center pb-8 pt-12 text-center">
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            className="mb-5 text-xs font-medium uppercase tracking-[0.45em] text-blue-200/75 sm:text-sm"
           >
-            Documentation
-          </a>
-        </div>
-      </main>
+            Web3 Engineering Platform
+          </motion.p>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 28, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ delay: 0.12, duration: 0.8 }}
+            className="bg-gradient-to-b from-white via-white to-blue-300 bg-clip-text text-6xl font-semibold tracking-[-0.06em] text-transparent drop-shadow-[0_0_35px_rgba(96,165,250,0.22)] sm:text-7xl lg:text-[108px]"
+          >
+            ChainSpan
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 22 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25, duration: 0.7 }}
+            className="mt-5 max-w-2xl text-base leading-7 text-zinc-300 sm:text-lg"
+          >
+            Production-oriented wallet, transaction and cross-chain
+            engineering platform built for modern Web3 applications.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 22 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.38, duration: 0.7 }}
+            className="mt-8 flex flex-col gap-3 sm:flex-row"
+          >
+            <button className="group flex h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-violet-600 px-7 font-medium shadow-[0_0_42px_rgba(79,70,229,0.4)] transition hover:scale-[1.03]">
+              Explore Platform
+              <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+            </button>
+
+            <button className="h-12 rounded-xl border border-white/15 bg-white/[0.04] px-7 font-medium text-zinc-200 backdrop-blur-xl transition hover:border-white/30 hover:bg-white/[0.08]">
+              View Architecture
+            </button>
+          </motion.div>
+        </section>
+
+        <motion.section
+          id="platform"
+          initial={{ opacity: 0, y: 35 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.55, duration: 0.8 }}
+          className="grid gap-3 pb-8 sm:grid-cols-2 lg:grid-cols-5"
+        >
+          {features.map(({ title, text, icon: Icon }) => (
+            <article
+              key={title}
+              className="group rounded-2xl border border-blue-300/10 bg-[#080d19]/75 p-5 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-blue-400/30 hover:bg-[#0b1222]/90"
+            >
+              <div className="mb-4 flex size-11 items-center justify-center rounded-xl border border-blue-400/20 bg-gradient-to-br from-blue-500/20 to-violet-500/20 shadow-[0_0_24px_rgba(59,130,246,0.12)]">
+                <Icon className="size-5 text-blue-300" />
+              </div>
+
+              <h2 className="font-medium text-white">{title}</h2>
+              <p className="mt-2 text-sm leading-6 text-zinc-400">{text}</p>
+            </article>
+          ))}
+        </motion.section>
+
+        <footer className="mb-5 grid grid-cols-2 divide-x divide-white/10 rounded-2xl border border-blue-300/10 bg-[#070b14]/75 py-4 text-center backdrop-blur-xl sm:grid-cols-4">
+          <Stat value="10+" label="EVM Networks" />
+          <Stat value="24/7" label="Transaction Tracking" />
+          <Stat value="100%" label="Typed Architecture" />
+          <Stat value="AI-first" label="Engineering Workflow" />
+        </footer>
+      </div>
+    </main>
+  );
+}
+
+function Stat({ value, label }: { value: string; label: string }) {
+  return (
+    <div className="px-3 py-2">
+      <p className="text-lg font-semibold text-blue-200 sm:text-2xl">
+        {value}
+      </p>
+      <p className="mt-1 text-xs text-zinc-500">{label}</p>
     </div>
   );
 }
