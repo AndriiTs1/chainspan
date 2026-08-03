@@ -3,14 +3,13 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { fadeUp } from "@/components/motion/fade-up";
 
 export function HeroSection() {
   return (
     <section className="flex flex-1 flex-col items-center justify-center pb-8 pt-12 text-center">
       <motion.p
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7 }}
+        {...fadeUp}
         className="mb-5 text-xs font-medium uppercase tracking-[0.45em] text-blue-200/75 sm:text-sm"
       >
         Web3 Engineering Platform
@@ -43,13 +42,10 @@ export function HeroSection() {
       >
         <Button variant="primary" className="group gap-2">
           Explore Platform
-
           <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
         </Button>
 
-        <Button variant="secondary">
-          View Architecture
-        </Button>
+        <Button variant="secondary">View Architecture</Button>
       </motion.div>
     </section>
   );
