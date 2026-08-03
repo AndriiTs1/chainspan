@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export function HeroSection() {
   return (
@@ -40,15 +41,15 @@ export function HeroSection() {
         transition={{ delay: 0.38, duration: 0.7 }}
         className="mt-8 flex flex-col gap-3 sm:flex-row"
       >
-        <button className="group flex h-12 items-center justify-center gap-2 rounded-xl bg-linear-to-r from-blue-600 to-violet-600 px-7 font-medium shadow-[0_0_42px_rgba(79,70,229,0.4)] transition hover:scale-[1.03]">
+        <Button variant="primary" className="group gap-2">
           Explore Platform
 
           <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-        </button>
+        </Button>
 
-        <button className="h-12 rounded-xl border border-white/15 bg-white/4 px-7 font-medium text-zinc-200 backdrop-blur-xl transition hover:border-white/30 hover:bg-white/8">
+        <Button variant="secondary">
           View Architecture
-        </button>
+        </Button>
       </motion.div>
     </section>
   );

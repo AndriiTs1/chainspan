@@ -4,29 +4,11 @@ import { getSupportedChain } from "@chainspan/web3";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, ChevronDown, Copy, ExternalLink, LogOut } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { formatUnits } from "viem";
 
 import { useWallet } from "@/hooks/use-wallet";
+import { formatBalance, shortenAddress } from "./utils/wallet-format";
 
 import { ConnectWalletButton } from "./connect-wallet-button";
-
-function shortenAddress(address: `0x${string}`) {
-  return `${address.slice(0, 6)}...${address.slice(-4)}`;
-}
-
-function formatBalance(
-  value: bigint,
-  decimals: number,
-  symbol: string,
-): string {
-  const formatted = Number(formatUnits(value, decimals));
-
-  if (!Number.isFinite(formatted)) {
-    return `0.0000 ${symbol}`;
-  }
-
-  return `${formatted.toFixed(4)} ${symbol}`;
-}
 
 export function WalletControl() {
   const {
