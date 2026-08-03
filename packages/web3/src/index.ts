@@ -3,9 +3,9 @@ export {
   getSupportedChain,
   isSupportedChainId,
   supportedChains,
-} from "./chains.js";
+} from "./chains";
 
 export type {
   SupportedChain,
   SupportedChainId,
-} from "./chains.js";
+} from "./chains";
