@@ -4,6 +4,9 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { fadeUp } from "@/components/motion/fade-up";
+import { heroTitleMotion } from "@/components/motion/hero-title";
+import { heroDescriptionMotion } from "@/components/motion/hero-description";
+import { heroActionsMotion } from "@/components/motion/hero-actions";
 
 export function HeroSection() {
   return (
@@ -16,18 +19,14 @@ export function HeroSection() {
       </motion.p>
 
       <motion.h1
-        initial={{ opacity: 0, y: 28, scale: 0.96 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ delay: 0.12, duration: 0.8 }}
+        {...heroTitleMotion}
         className="bg-linear-to-b from-white via-white to-blue-300 bg-clip-text text-6xl font-semibold tracking-[-0.06em] text-transparent drop-shadow-[0_0_35px_rgba(96,165,250,0.22)] sm:text-7xl lg:text-[108px]"
       >
         ChainSpan
       </motion.h1>
 
       <motion.p
-        initial={{ opacity: 0, y: 22 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.25, duration: 0.7 }}
+        {...heroDescriptionMotion}
         className="mt-5 max-w-2xl text-base leading-7 text-zinc-300 sm:text-lg"
       >
         Production-oriented wallet, transaction and cross-chain engineering
@@ -35,9 +34,7 @@ export function HeroSection() {
       </motion.p>
 
       <motion.div
-        initial={{ opacity: 0, y: 22 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.38, duration: 0.7 }}
+        {...heroActionsMotion}
         className="mt-8 flex flex-col gap-3 sm:flex-row"
       >
         <Button variant="primary" className="group gap-2">
