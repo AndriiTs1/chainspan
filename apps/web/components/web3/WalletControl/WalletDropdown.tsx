@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, Copy, ExternalLink, LogOut } from "lucide-react";
+import { WalletSession } from "./WalletSession";
 
 type WalletChain = {
   id: number;
@@ -52,26 +53,11 @@ export function WalletDropdown({
           transition={{ duration: 0.15 }}
           className="absolute right-0 z-50 mt-2 w-62.5 overflow-hidden rounded-xl border border-blue-300/10 bg-[#070b14]/96 p-1.5 shadow-[0_24px_70px_rgba(0,0,0,0.5)] backdrop-blur-2xl"
         >
-          <div className="px-3 py-2.5">
-            <p className="text-[9px] font-medium uppercase tracking-[0.2em] text-zinc-600">
-              Wallet session
-            </p>
-
-            <p className="mt-1.5 truncate font-mono text-[11px] text-zinc-300">
-              {address}
-            </p>
-
-            <div className="mt-2 flex items-center gap-2 text-[10px] text-zinc-500">
-              <span className="size-1.5 rounded-full bg-emerald-400" />
-              <span>{chainName}</span>
-            </div>
-
-            <p className="mt-1 text-[11px] text-zinc-400">
-              {balanceLabel}
-            </p>
-          </div>
-
-          <div className="my-1 h-px bg-white/6" />
+          <WalletSession
+            address={address}
+            chainName={chainName}
+            balanceLabel={balanceLabel}
+          />
 
           <div className="px-1 py-1">
             <p className="px-2 pb-1.5 text-[9px] font-medium uppercase tracking-[0.2em] text-zinc-600">
@@ -82,8 +68,7 @@ export function WalletDropdown({
               {chains.map((availableChain) => {
                 const isActive = availableChain.id === chainId;
                 const isPending =
-                  isSwitchChainPending &&
-                  pendingChainId === availableChain.id;
+                  isSwitchChainPending && pendingChainId === availableChain.id;
 
                 return (
                   <button
