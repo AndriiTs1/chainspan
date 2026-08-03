@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Bot, Code2, Link2, Send, WalletCards } from "lucide-react";
 import { ChainSpanLogo } from "@/components/brand/chainspan-logo";
 import { ChainSpanScene } from "@/components/hero/chainspan-scene";
+import { WalletControl } from "@/components/web3";
 
 const features = [
   {
@@ -64,10 +65,7 @@ export default function Home() {
             </a>
           </nav>
 
-          <button className="group flex h-11 items-center gap-2 rounded-xl border border-blue-300/30 bg-linear-to-r from-blue-600 to-violet-600 px-5 text-sm font-medium shadow-[0_0_32px_rgba(59,130,246,0.35)] transition hover:scale-[1.03]">
-            Launch App
-            <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-          </button>
+          <WalletControl />
         </header>
 
         <section className="flex flex-1 flex-col items-center justify-center pb-8 pt-12 text-center">
