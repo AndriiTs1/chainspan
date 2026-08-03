@@ -247,3 +247,139 @@ Native APIs, permissions, device capabilities and mobile navigation must remain 
 ```
 
 ```
+
+## 18. Implementation Roadmap
+
+### Stage 1. Project Foundation — COMPLETE
+
+- pnpm monorepo
+- Next.js web application
+- Expo mobile application
+- shared Web3 package
+- TypeScript configuration
+- lint and production build
+- GitHub and Vercel deployment
+
+### Stage 2. Wallet Infrastructure — COMPLETE
+
+- Wagmi and Viem integration
+- Web3 and React Query providers
+- browser wallet connection
+- WalletConnect integration
+- wallet connection modal
+- address, network and native balance
+- disconnect flow
+- supported network switching
+- desktop and mobile Web support
+
+### Stage 3. Landing Page Structure
+
+- extract Header from `page.tsx`
+- extract Hero from `page.tsx`
+- create reusable Container
+- preserve the approved visual design
+- improve mobile layout
+- connect navigation and CTA actions
+
+### Stage 4. Shared Token Foundation
+
+- shared ERC-20 ABI
+- token types
+- token registry by chain
+- native token configuration
+- public exports from `@chainspan/web3`
+
+### Stage 5. Wallet Portfolio
+
+- native balance
+- ERC-20 balances
+- loading, empty and error states
+- chain-aware token list
+- portfolio UI
+- React Query caching
+
+### Stage 6. Message Signing
+
+- sign-message interface
+- wallet confirmation flow
+- signature result
+- signature verification
+- rejected-request handling
+
+### Stage 7. Transaction Lifecycle
+
+- native asset transfer form
+- transaction simulation
+- wallet confirmation
+- pending state
+- transaction hash
+- receipt confirmation
+- rejected, reverted and failed states
+- explorer link
+
+### Stage 8. Smart Contract Interaction
+
+- contract address validation
+- ABI input
+- read contract calls
+- write contract calls
+- simulation before writing
+- decoded results and errors
+
+### Stage 9. Activity and Network Data
+
+- current block
+- gas information
+- recent wallet activity
+- transaction details
+- explorer integration
+- automatic refresh and caching
+
+### Stage 10. Cross-Chain Foundation
+
+- source and destination chain selection
+- asset and amount validation
+- quote model
+- cross-chain lifecycle state machine
+- provider adapter interface
+- demo bridge flow without unsafe custody
+
+### Stage 11. Testing and Reliability
+
+- unit tests for shared Web3 utilities
+- component tests
+- wallet flow tests
+- transaction state tests
+- mocked RPC tests
+- error boundaries
+- CI quality gates
+
+### Stage 12. Production Readiness
+
+- responsive review
+- accessibility review
+- Lighthouse optimization
+- security review
+- environment validation
+- metadata and social preview
+- monitoring and analytics
+- documentation and architecture updates
+
+### Stage 13. Interview Preparation
+
+- complete `INTERVIEW.md`
+- explain every architectural decision
+- prepare Web3 lifecycle demonstrations
+- prepare failure scenarios
+- prepare project walkthrough
+- prepare common React, Next.js, TypeScript and Web3 questions
+
+### Stage 14. React Native Application
+
+- reuse `@chainspan/web3`
+- mobile wallet connection
+- WalletConnect deep links
+- secure local storage
+- native portfolio UI
+- native transaction flow
+- iOS and Android testing
