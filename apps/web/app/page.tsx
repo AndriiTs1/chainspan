@@ -5,6 +5,7 @@ import { HeroSection } from "@/components/hero/hero-section";
 import { FeaturesSection } from "@/components/home/features-section";
 import { StatsSection } from "@/components/home/stats-section";
 import { Header } from "@/components/layout/header";
+import { Container } from "@/components/ui/container";
 
 export default function Home() {
   return (
@@ -13,7 +14,7 @@ export default function Home() {
 
       <ChainSpanScene />
 
-      <div className="relative z-10 mx-auto flex min-h-screen max-w-375 flex-col px-6 lg:px-10">
+      <Container className="relative z-10 flex min-h-screen flex-col">
         <Header />
 
         <HeroSection />
@@ -21,7 +22,7 @@ export default function Home() {
         <FeaturesSection />
 
         <StatsSection />
-      </div>
+      </Container>
     </main>
   );
 }
