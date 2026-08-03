@@ -9,14 +9,18 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@chainspan/web3": "workspace:*",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.7.0",
+    "@tanstack/react-query": "^5.101.4",
     "framer-motion": "^12.43.0",
     "lucide-react": "^1.28.0",
     "next": "16.2.12",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "three": "^0.182.0"
+    "three": "^0.182.0",
+    "viem": "^2.55.10",
+    "wagmi": "^3.7.5"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -27,6 +31,6 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.12",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "5.9.3"
   }
 }
