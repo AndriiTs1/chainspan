@@ -4,12 +4,12 @@ import { motion } from "framer-motion";
 import {
   ArrowRight,
   Bot,
-  Boxes,
   Code2,
   Link2,
   Send,
   WalletCards,
 } from "lucide-react";
+import { ChainSpanLogo } from "@/components/brand/chainspan-logo";
 import { ChainSpanScene } from "@/components/hero/chainspan-scene";
 
 const features = [
@@ -50,9 +50,7 @@ export default function Home() {
       <div className="relative z-10 mx-auto flex min-h-screen max-w-[1500px] flex-col px-6 lg:px-10">
         <header className="flex h-24 items-center justify-between">
           <a href="#" className="flex items-center gap-3">
-            <span className="flex size-10 items-center justify-center rounded-xl border border-blue-400/30 bg-blue-500/10 shadow-[0_0_30px_rgba(59,130,246,0.2)] backdrop-blur-xl">
-              <Boxes className="size-5 text-blue-400" />
-            </span>
+            <ChainSpanLogo />
             <span className="text-xl font-semibold tracking-tight">
               ChainSpan
             </span>
