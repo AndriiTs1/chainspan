@@ -18,6 +18,15 @@ export type { Erc20Token, NativeToken, Token } from "./token.types";
 
 export type { AssetBalance, Portfolio } from "./portfolio.types";
 
+export { buildPortfolio } from "./portfolio";
+
+export type {
+  BalanceReadResult,
+  BuildPortfolioResult,
+  PortfolioAssetFailure,
+  TokenBalanceInput,
+} from "./portfolio";
+
 export {
   getToken,
   getTokensForChain,
