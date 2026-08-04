@@ -2,14 +2,21 @@
 
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Float, Icosahedron, Stars } from "@react-three/drei";
+import { useReducedMotion } from "framer-motion";
 import { useRef } from "react";
 import * as THREE from "three";
 
-function Core() {
+function Core({ reduceMotion }: { reduceMotion: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
 
   useFrame((state, delta) => {
     if (!groupRef.current) return;
+
+    // The continuous rotation/pointer-parallax is the most prominent motion
+    // on the page, so it's the one piece prefers-reduced-motion must stop -
+    // framer-motion's MotionConfig can't reach into react-three-fiber's own
+    // render loop, hence the manual gate here.
+    if (reduceMotion) return;
 
     groupRef.current.rotation.y += delta * 0.1;
     groupRef.current.rotation.x =
@@ -73,16 +80,18 @@ function FloatingObject({
   position,
   scale,
   color,
+  reduceMotion,
 }: {
   position: [number, number, number];
   scale: number;
   color: string;
+  reduceMotion: boolean;
 }) {
   return (
     <Float
-      speed={1.4}
-      rotationIntensity={1.2}
-      floatIntensity={1.4}
+      speed={reduceMotion ? 0 : 1.4}
+      rotationIntensity={reduceMotion ? 0 : 1.2}
+      floatIntensity={reduceMotion ? 0 : 1.4}
       position={position}
     >
       <mesh scale={scale}>
@@ -99,6 +108,8 @@ function FloatingObject({
 }
 
 export function ChainSpanScene() {
+  const reduceMotion = useReducedMotion() ?? false;
+
   return (
     <div className="absolute inset-0">
       <Canvas
@@ -108,27 +119,31 @@ export function ChainSpanScene() {
       >
         <ambientLight intensity={0.25} />
 
-        <Core />
+        <Core reduceMotion={reduceMotion} />
 
         <FloatingObject
           position={[-4.4, 2.1, -1]}
           scale={0.34}
           color="#2563eb"
+          reduceMotion={reduceMotion}
         />
         <FloatingObject
           position={[4.3, 2.3, -1]}
           scale={0.45}
           color="#7c3aed"
+          reduceMotion={reduceMotion}
         />
         <FloatingObject
           position={[-4.8, -2.2, -1]}
           scale={0.26}
           color="#4338ca"
+          reduceMotion={reduceMotion}
         />
         <FloatingObject
           position={[4.9, -1.8, -1]}
           scale={0.3}
           color="#3b82f6"
+          reduceMotion={reduceMotion}
         />
 
         <Stars
@@ -138,7 +153,7 @@ export function ChainSpanScene() {
           factor={2}
           saturation={0}
           fade
-          speed={0.25}
+          speed={reduceMotion ? 0 : 0.25}
         />
       </Canvas>
     </div>

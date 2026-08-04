@@ -1,8 +1,9 @@
 "use client";
 
 import { getSupportedChain } from "@chainspan/web3";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 
+import { getFocusableElements, useDismissableLayer } from "@/hooks/use-dismissable-layer";
 import { useWallet } from "@/hooks/use-wallet";
 
 import { ConnectWalletButton } from "./connect-wallet-button";
@@ -25,37 +26,48 @@ export function WalletControl() {
     switchChainError,
   } = useWallet();
 
-  const containerRef = useRef<HTMLDivElement>(null);
+  const menuId = useId();
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
+
+  function closeDropdown() {
+    setIsOpen(false);
+  }
+
+  useDismissableLayer({
+    isOpen,
+    onDismiss: closeDropdown,
+    containerRef: dropdownRef,
+    triggerRef,
+  });
 
   useEffect(() => {
     if (!isOpen) return;
 
-    function handlePointerDown(event: PointerEvent) {
-      const target = event.target;
+    function handleArrowKeys(event: KeyboardEvent) {
+      if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
 
-      if (
-        target instanceof Node &&
-        containerRef.current &&
-        !containerRef.current.contains(target)
-      ) {
-        setIsOpen(false);
-      }
+      const focusable = getFocusableElements(dropdownRef.current);
+      if (focusable.length === 0) return;
+
+      event.preventDefault();
+
+      const currentIndex = focusable.indexOf(
+        document.activeElement as HTMLElement,
+      );
+      const delta = event.key === "ArrowDown" ? 1 : -1;
+      const nextIndex =
+        (currentIndex + delta + focusable.length) % focusable.length;
+
+      focusable[nextIndex]?.focus();
     }
 
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        setIsOpen(false);
-      }
-    }
-
-    document.addEventListener("pointerdown", handlePointerDown);
-    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("keydown", handleArrowKeys);
 
     return () => {
-      document.removeEventListener("pointerdown", handlePointerDown);
-      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("keydown", handleArrowKeys);
     };
   }, [isOpen]);
 
@@ -100,16 +112,20 @@ export function WalletControl() {
   }
 
   return (
-    <div ref={containerRef} className="relative">
+    <div className="relative">
       <WalletTrigger
+        ref={triggerRef}
         addressLabel={shortenAddress(address)}
         balanceLabel={balanceLabel}
         chainName={chainName}
         isOpen={isOpen}
+        menuId={menuId}
         onClick={() => setIsOpen((current) => !current)}
       />
 
       <WalletDropdown
+        ref={dropdownRef}
+        id={menuId}
         address={address}
         balanceLabel={balanceLabel}
         chainId={chainId}

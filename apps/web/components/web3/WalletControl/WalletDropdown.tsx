@@ -1,5 +1,6 @@
 "use client";
 
+import { forwardRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import type { WalletChain } from "../shared/types";
@@ -8,6 +9,7 @@ import { WalletChainList } from "./WalletChainList";
 import { WalletSession } from "./WalletSession";
 
 type WalletDropdownProps = {
+  id: string;
   address: `0x${string}`;
   balanceLabel: string;
   chainId: number;
@@ -24,57 +26,66 @@ type WalletDropdownProps = {
   onSelectChain: (chainId: number) => void;
 };
 
-export function WalletDropdown({
-  address,
-  balanceLabel,
-  chainId,
-  chainName,
-  chains,
-  explorerUrl,
-  isCopied,
-  isOpen,
-  isSwitchChainPending,
-  pendingChainId,
-  switchChainError,
-  onCopyAddress,
-  onDisconnect,
-  onSelectChain,
-}: WalletDropdownProps) {
-  return (
-    <AnimatePresence>
-      {isOpen ? (
-        <motion.div
-          role="menu"
-          initial={{ opacity: 0, y: -6, scale: 0.98 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: -4, scale: 0.98 }}
-          transition={{ duration: 0.15 }}
-          className="absolute right-0 z-50 mt-2 w-62.5 overflow-hidden rounded-xl border border-blue-300/10 bg-[#070b14]/96 p-1.5 shadow-[0_24px_70px_rgba(0,0,0,0.5)] backdrop-blur-2xl"
-        >
-          <WalletSession
-            address={address}
-            chainName={chainName}
-            balanceLabel={balanceLabel}
-          />
+export const WalletDropdown = forwardRef<HTMLDivElement, WalletDropdownProps>(
+  function WalletDropdown(
+    {
+      id,
+      address,
+      balanceLabel,
+      chainId,
+      chainName,
+      chains,
+      explorerUrl,
+      isCopied,
+      isOpen,
+      isSwitchChainPending,
+      pendingChainId,
+      switchChainError,
+      onCopyAddress,
+      onDisconnect,
+      onSelectChain,
+    },
+    ref,
+  ) {
+    return (
+      <AnimatePresence>
+        {isOpen ? (
+          <motion.div
+            ref={ref}
+            id={id}
+            role="dialog"
+            aria-label="Wallet menu"
+            initial={{ opacity: 0, y: -6, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -4, scale: 0.98 }}
+            transition={{ duration: 0.15 }}
+            className="absolute right-0 z-50 mt-2 w-62.5 overflow-hidden rounded-xl border border-blue-300/10 bg-[#070b14]/96 p-1.5 shadow-[0_24px_70px_rgba(0,0,0,0.5)] backdrop-blur-2xl"
+          >
+            <WalletSession
+              address={address}
+              chainName={chainName}
+              balanceLabel={balanceLabel}
+            />
 
-          <WalletChainList
-            chainId={chainId}
-            chains={chains}
-            isSwitchChainPending={isSwitchChainPending}
-            pendingChainId={pendingChainId}
-            switchChainError={switchChainError}
-            onSelectChain={onSelectChain}
-          />
+            <WalletChainList
+              chainId={chainId}
+              chains={chains}
+              isSwitchChainPending={isSwitchChainPending}
+              pendingChainId={pendingChainId}
+              switchChainError={switchChainError}
+              onSelectChain={onSelectChain}
+            />
 
-          <WalletActions
-            address={address}
-            explorerUrl={explorerUrl}
-            isCopied={isCopied}
-            onCopyAddress={onCopyAddress}
-            onDisconnect={onDisconnect}
-          />
-        </motion.div>
-      ) : null}
-    </AnimatePresence>
-  );
-}
+            <WalletActions
+              address={address}
+              explorerUrl={explorerUrl}
+              isCopied={isCopied}
+              onCopyAddress={onCopyAddress}
+              onDisconnect={onDisconnect}
+            />
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
+    );
+  },
+);

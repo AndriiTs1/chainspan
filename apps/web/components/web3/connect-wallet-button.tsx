@@ -2,8 +2,9 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { Globe2, Smartphone, Wallet, X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
+import { useDismissableLayer } from "@/hooks/use-dismissable-layer";
 import { useWallet } from "@/hooks/use-wallet";
 
 const triggerButtonClassName = [
@@ -50,6 +51,7 @@ export function ConnectWalletButton() {
   const { connectors, connect, isConnected, isConnectPending } = useWallet();
 
   const modalRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
   const [isOpen, setIsOpen] = useState(false);
   const [connectionError, setConnectionError] = useState<string | null>(null);
@@ -57,37 +59,21 @@ export function ConnectWalletButton() {
     null,
   );
 
-  useEffect(() => {
-    if (!isOpen) return;
+  function closeDialog() {
+    if (isConnectPending) return;
 
-    function handlePointerDown(event: PointerEvent) {
-      const target = event.target;
+    setIsOpen(false);
+    setConnectionError(null);
+    setPendingConnectorId(null);
+  }
 
-      if (
-        target instanceof Node &&
-        modalRef.current &&
-        !modalRef.current.contains(target)
-      ) {
-        setIsOpen(false);
-        setConnectionError(null);
-      }
-    }
-
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        setIsOpen(false);
-        setConnectionError(null);
-      }
-    }
-
-    document.addEventListener("pointerdown", handlePointerDown);
-    document.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.removeEventListener("pointerdown", handlePointerDown);
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [isOpen]);
+  useDismissableLayer({
+    isOpen,
+    onDismiss: closeDialog,
+    containerRef: modalRef,
+    triggerRef,
+    trapFocus: true,
+  });
 
   if (isConnected) {
     return null;
@@ -118,14 +104,6 @@ export function ConnectWalletButton() {
     setConnectionError(null);
     setPendingConnectorId(null);
     setIsOpen(true);
-  }
-
-  function closeDialog() {
-    if (isConnectPending) return;
-
-    setIsOpen(false);
-    setConnectionError(null);
-    setPendingConnectorId(null);
   }
 
   async function connectWallet(
@@ -176,6 +154,7 @@ export function ConnectWalletButton() {
   return (
     <>
       <button
+        ref={triggerRef}
         type="button"
         onClick={openDialog}
         className={triggerButtonClassName}
@@ -197,6 +176,7 @@ export function ConnectWalletButton() {
               role="dialog"
               aria-modal="true"
               aria-labelledby="wallet-dialog-title"
+              aria-describedby="wallet-dialog-description"
               initial={{ opacity: 0, y: 16, scale: 0.97 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 10, scale: 0.98 }}
@@ -212,7 +192,10 @@ export function ConnectWalletButton() {
                     Connect wallet
                   </h2>
 
-                  <p className="mt-1 text-xs leading-5 text-zinc-500">
+                  <p
+                    id="wallet-dialog-description"
+                    className="mt-1 text-xs leading-5 text-zinc-500"
+                  >
                     Choose how you want to connect to ChainSpan.
                   </p>
                 </div>

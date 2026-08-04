@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { MotionConfig } from "framer-motion";
 import { Geist, Geist_Mono } from "next/font/google";
 
 import { Web3Provider } from "@/components/providers/web3-provider";
@@ -79,7 +80,9 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-[#02040a] text-white">
-        <Web3Provider>{children}</Web3Provider>
+        <MotionConfig reducedMotion="user">
+          <Web3Provider>{children}</Web3Provider>
+        </MotionConfig>
       </body>
     </html>
   );

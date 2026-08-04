@@ -35,7 +35,6 @@ export function WalletChainList({
               <button
                 key={availableChain.id}
                 type="button"
-                role="menuitem"
                 onClick={() => onSelectChain(availableChain.id)}
                 disabled={isActive || isSwitchChainPending}
                 className="flex w-full items-center gap-2.5 rounded-lg px-2 py-2 text-left text-xs text-zinc-400 transition hover:bg-white/5 hover:text-white disabled:cursor-default disabled:opacity-70"
