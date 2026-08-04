@@ -39,3 +39,22 @@ export type {
   TokenVerificationStatus,
   TokenVisibility,
 } from "./token-registry";
+
+export {
+  buildSigningMessage,
+  buildVerificationResult,
+  isSigningRequestExpired,
+} from "./signing";
+
+export type {
+  BuildSigningMessageParams,
+  BuildVerificationResultParams,
+} from "./signing";
+
+export type {
+  SigningError,
+  SigningErrorCategory,
+  SigningRequest,
+  SigningResult,
+  VerificationResult,
+} from "./signing.types";
