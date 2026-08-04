@@ -2,14 +2,10 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 
+import type { WalletChain } from "../shared/types";
 import { WalletActions } from "./WalletActions";
 import { WalletChainList } from "./WalletChainList";
 import { WalletSession } from "./WalletSession";
-
-type WalletChain = {
-  id: number;
-  name: string;
-};
 
 type WalletDropdownProps = {
   address: `0x${string}`;

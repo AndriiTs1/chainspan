@@ -47,12 +47,7 @@ function isUserCancellation(error: Error): boolean {
 }
 
 export function ConnectWalletButton() {
-  const {
-    connectors,
-    connect,
-    isConnected,
-    isConnectPending,
-  } = useWallet();
+  const { connectors, connect, isConnected, isConnectPending } = useWallet();
 
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -133,7 +128,7 @@ export function ConnectWalletButton() {
     setPendingConnectorId(null);
   }
 
-  function connectWallet(
+  async function connectWallet(
     connector: (typeof connectors)[number] | undefined,
   ) {
     if (!connector || isConnectPending) return;
@@ -141,40 +136,41 @@ export function ConnectWalletButton() {
     setConnectionError(null);
     setPendingConnectorId(connector.id);
 
-    connect(
-      { connector },
-      {
-        onSuccess: () => {
-          setConnectionError(null);
-          setPendingConnectorId(null);
-          setIsOpen(false);
-        },
-        onError: (error) => {
-          setPendingConnectorId(null);
+    try {
+      await connect({ connector });
 
-          if (isUserCancellation(error)) {
-            setConnectionError(null);
-            return;
-          }
+      setConnectionError(null);
+      setPendingConnectorId(null);
+      setIsOpen(false);
+    } catch (error) {
+      setPendingConnectorId(null);
 
-          setConnectionError(connectionErrorMessage);
+      if (error instanceof Error && isUserCancellation(error)) {
+        setConnectionError(null);
+        return;
+      }
 
-          console.warn("Wallet connection failed", {
-            connectorId: connector.id,
-            connectorName: connector.name,
-            errorName: error.name,
-            errorMessage: error.message,
-            errorCause:
-              error.cause instanceof Error
-                ? {
-                    name: error.cause.name,
-                    message: error.cause.message,
-                  }
-                : String(error.cause ?? ""),
-          });
-        },
-      },
-    );
+      setConnectionError(connectionErrorMessage);
+
+      console.warn("Wallet connection failed", {
+        connectorId: connector.id,
+        connectorName: connector.name,
+        error:
+          error instanceof Error
+            ? {
+                name: error.name,
+                message: error.message,
+                cause:
+                  error.cause instanceof Error
+                    ? {
+                        name: error.cause.name,
+                        message: error.cause.message,
+                      }
+                    : String(error.cause ?? ""),
+              }
+            : String(error),
+      });
+    }
   }
 
   return (

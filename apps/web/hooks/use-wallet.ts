@@ -36,7 +36,11 @@ export function useWallet() {
     balanceError: balance.error,
 
     connectors: connect.connectors,
-    connect: connect.connect,
+
+    // Снаружи по-прежнему называется connect,
+    // но внутри используется Promise-версия connectAsync.
+    connect: connect.connectAsync,
+
     connectError: connect.error,
     isConnectPending: connect.isPending,
 

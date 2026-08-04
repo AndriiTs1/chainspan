@@ -1,7 +1,4 @@
-type WalletChain = {
-  id: number;
-  name: string;
-};
+import type { WalletChain } from "../shared/types";
 
 type WalletChainListProps = {
   chainId: number;

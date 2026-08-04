@@ -28,6 +28,7 @@ const connectors =
           walletConnect({
             projectId: walletConnectProjectId,
             showQrModal: true,
+            logger: "fatal",
             metadata: {
               name: "ChainSpan",
               description:
