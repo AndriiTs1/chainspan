@@ -24,4 +24,9 @@ export {
   hasRegisteredToken,
 } from "./token-registry";
 
-export type { TokenRegistry } from "./token-registry";
+export type {
+  RegisteredErc20Token,
+  TokenRegistry,
+  TokenVerificationStatus,
+  TokenVisibility,
+} from "./token-registry";
