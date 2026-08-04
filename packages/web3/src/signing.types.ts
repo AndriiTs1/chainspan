@@ -23,10 +23,12 @@ export type VerificationResult = {
 export type SigningErrorCategory =
   | "user_rejection"
   | "wallet_unavailable"
+  | "unsupported_chain"
   | "account_changed"
-  | "malformed_signature"
-  | "verification_failed"
+  | "chain_changed"
   | "expired_request"
+  | "verification_failed"
+  | "malformed_signature"
   | "unknown";
 
 export type SigningError = {

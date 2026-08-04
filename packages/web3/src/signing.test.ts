@@ -4,6 +4,7 @@ import { supportedChains } from "./chains";
 import {
   buildSigningMessage,
   buildVerificationResult,
+  classifySigningError,
   isSigningRequestExpired,
 } from "./signing";
 
@@ -179,5 +180,43 @@ describe("buildVerificationResult", () => {
     });
 
     expect(result.isValid).toBe(false);
+  });
+});
+
+describe("classifySigningError", () => {
+  it("classifies UserRejectedRequestError by name as user_rejection", () => {
+    const error = new Error("Something happened");
+    error.name = "UserRejectedRequestError";
+
+    const classified = classifySigningError(error);
+
+    expect(classified.category).toBe("user_rejection");
+    expect(classified.cause).toBe(error);
+  });
+
+  it.each([
+    "User rejected the request",
+    "user rejected the request.",
+    "User denied message signature",
+    "Request rejected by the user",
+  ])("classifies %j by message as user_rejection", (message) => {
+    const classified = classifySigningError(new Error(message));
+
+    expect(classified.category).toBe("user_rejection");
+  });
+
+  it("classifies an unrelated Error as unknown, keeping the cause", () => {
+    const error = new Error("Network timeout");
+
+    const classified = classifySigningError(error);
+
+    expect(classified.category).toBe("unknown");
+    expect(classified.cause).toBe(error);
+  });
+
+  it("classifies a non-Error thrown value as unknown with no cause", () => {
+    expect(classifySigningError("oops")).toEqual({ category: "unknown" });
+    expect(classifySigningError(undefined)).toEqual({ category: "unknown" });
+    expect(classifySigningError(null)).toEqual({ category: "unknown" });
   });
 });

@@ -43,6 +43,7 @@ export type {
 export {
   buildSigningMessage,
   buildVerificationResult,
+  classifySigningError,
   isSigningRequestExpired,
 } from "./signing";
 

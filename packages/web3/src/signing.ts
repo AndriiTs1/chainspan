@@ -1,6 +1,10 @@
 import { getSupportedChain } from "./chains";
 import type { SupportedChainId } from "./chains";
-import type { SigningRequest, VerificationResult } from "./signing.types";
+import type {
+  SigningError,
+  SigningRequest,
+  VerificationResult,
+} from "./signing.types";
 
 export type BuildSigningMessageParams = {
   appName: string;
@@ -97,5 +101,28 @@ export function buildVerificationResult(
     isValid: params.isValid,
     accountChangedSinceSigning,
     chainChangedSinceSigning,
+  };
+}
+
+// Classifies a caught sign-message exception as a user rejection vs.
+// anything else. Only handles this one distinction (the rest of the error
+// model - wallet_unavailable, unsupported_chain, expired_request, etc. - is
+// decided directly by the caller's own control flow, not by inspecting a
+// caught error, so it doesn't belong in a classifier).
+export function classifySigningError(error: unknown): SigningError {
+  if (!(error instanceof Error)) {
+    return { category: "unknown" };
+  }
+
+  const message = error.message.toLowerCase();
+  const isRejection =
+    error.name === "UserRejectedRequestError" ||
+    message.includes("user rejected") ||
+    message.includes("user denied") ||
+    message.includes("request rejected");
+
+  return {
+    category: isRejection ? "user_rejection" : "unknown",
+    cause: error,
   };
 }
