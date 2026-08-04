@@ -24,7 +24,7 @@ const description =
 export const metadata: Metadata = {
   metadataBase: new URL("https://chainspan.vercel.app"),
   title: {
-    default: "ChainSpan — Web3 Engineering Platform",
+    default: "ChainSpan",
     template: "%s | ChainSpan",
   },
   description,
