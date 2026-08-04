@@ -4,6 +4,7 @@ import { getSupportedChain } from "@chainspan/web3";
 import { useEffect, useId, useRef, useState } from "react";
 
 import { getFocusableElements, useDismissableLayer } from "@/hooks/use-dismissable-layer";
+import { usePortfolio } from "@/hooks/use-portfolio";
 import { useWallet } from "@/hooks/use-wallet";
 
 import { ConnectWalletButton } from "./connect-wallet-button";
@@ -25,6 +26,8 @@ export function WalletControl() {
     switchChain,
     switchChainError,
   } = useWallet();
+
+  const portfolio = usePortfolio();
 
   const menuId = useId();
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -136,6 +139,7 @@ export function WalletControl() {
         isOpen={isOpen}
         isSwitchChainPending={isSwitchChainPending}
         pendingChainId={pendingChainId}
+        portfolio={portfolio}
         switchChainError={switchChainError}
         onCopyAddress={copyAddress}
         onDisconnect={disconnectWallet}

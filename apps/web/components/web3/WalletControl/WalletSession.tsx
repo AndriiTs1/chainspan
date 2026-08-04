@@ -20,15 +20,12 @@ export function WalletSession({
           {address}
         </p>
 
-        <div className="mt-2 flex items-center gap-2 text-[10px] text-zinc-500">
-          <span className="size-1.5 rounded-full bg-emerald-400" />
-
-          <span>{chainName}</span>
+        <div className="mt-1.5 flex items-center gap-2 text-[10px] text-zinc-500">
+          <span className="size-1.5 shrink-0 rounded-full bg-emerald-400" />
+          <span className="truncate">
+            {chainName} · {balanceLabel}
+          </span>
         </div>
-
-        <p className="mt-1 text-[11px] text-zinc-400">
-          {balanceLabel}
-        </p>
       </div>
 
       <div className="my-1 h-px bg-white/6" />

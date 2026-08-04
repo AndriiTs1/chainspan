@@ -3,7 +3,10 @@
 import { forwardRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
+import type { UsePortfolioResult } from "@/hooks/use-portfolio";
+
 import type { WalletChain } from "../shared/types";
+import { PortfolioSection } from "./PortfolioSection";
 import { WalletActions } from "./WalletActions";
 import { WalletChainList } from "./WalletChainList";
 import { WalletSession } from "./WalletSession";
@@ -20,6 +23,7 @@ type WalletDropdownProps = {
   isOpen: boolean;
   isSwitchChainPending: boolean;
   pendingChainId?: number;
+  portfolio: UsePortfolioResult;
   switchChainError?: Error | null;
   onCopyAddress: () => void;
   onDisconnect: () => void;
@@ -40,6 +44,7 @@ export const WalletDropdown = forwardRef<HTMLDivElement, WalletDropdownProps>(
       isOpen,
       isSwitchChainPending,
       pendingChainId,
+      portfolio,
       switchChainError,
       onCopyAddress,
       onDisconnect,
@@ -55,6 +60,7 @@ export const WalletDropdown = forwardRef<HTMLDivElement, WalletDropdownProps>(
             id={id}
             role="dialog"
             aria-label="Wallet menu"
+            layout="size"
             initial={{ opacity: 0, y: -6, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -4, scale: 0.98 }}
@@ -66,6 +72,8 @@ export const WalletDropdown = forwardRef<HTMLDivElement, WalletDropdownProps>(
               chainName={chainName}
               balanceLabel={balanceLabel}
             />
+
+            <PortfolioSection result={portfolio} />
 
             <WalletChainList
               chainId={chainId}
