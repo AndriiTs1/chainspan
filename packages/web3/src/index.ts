@@ -15,3 +15,13 @@ export { erc20Abi } from "./abi/erc20";
 export { getNativeToken, isNativeToken } from "./tokens";
 
 export type { Erc20Token, NativeToken, Token } from "./token.types";
+
+export type { AssetBalance, Portfolio } from "./portfolio.types";
+
+export {
+  getToken,
+  getTokensForChain,
+  hasRegisteredToken,
+} from "./token-registry";
+
+export type { TokenRegistry } from "./token-registry";
