@@ -16,7 +16,10 @@ function Stat({ value, label }: { value: string; label: string }) {
 
 export function StatsSection() {
   return (
-    <footer className="mb-5 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-blue-300/10 bg-white/10 text-center backdrop-blur-xl sm:grid-cols-4">
+    <footer
+      id="ecosystem"
+      className="mb-5 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-blue-300/10 bg-white/10 text-center backdrop-blur-xl sm:grid-cols-4"
+    >
       <Stat value="10+" label="EVM Networks" />
       <Stat value="24/7" label="Transaction Tracking" />
       <Stat value="100%" label="Typed Architecture" />
