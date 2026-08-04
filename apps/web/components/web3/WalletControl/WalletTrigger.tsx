@@ -25,7 +25,7 @@ export const WalletTrigger = forwardRef<HTMLButtonElement, WalletTriggerProps>(
         aria-expanded={isOpen}
         aria-haspopup="dialog"
         aria-controls={menuId}
-        className="group flex min-w-51.25 items-center gap-3 rounded-xl border border-blue-300/15 bg-[#070b14]/80 px-3 py-2 text-left shadow-[0_10px_30px_rgba(0,0,0,0.2)] backdrop-blur-xl transition hover:border-blue-300/30 hover:bg-[#0a101d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/50"
+        className="group flex items-center gap-2 rounded-xl border border-blue-300/15 bg-[#070b14]/80 px-2.5 py-1.5 text-left shadow-[0_10px_30px_rgba(0,0,0,0.2)] backdrop-blur-xl transition hover:border-blue-300/30 hover:bg-[#0a101d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/50 sm:min-w-51.25 sm:gap-3 sm:px-3 sm:py-2"
       >
         <span
           aria-hidden="true"
@@ -37,7 +37,7 @@ export const WalletTrigger = forwardRef<HTMLButtonElement, WalletTriggerProps>(
             {addressLabel}
           </span>
 
-          <span className="mt-0.5 block truncate text-[10px] text-zinc-500">
+          <span className="mt-0.5 hidden truncate text-[10px] text-zinc-500 sm:block">
             {chainName} · {balanceLabel}
           </span>
         </span>

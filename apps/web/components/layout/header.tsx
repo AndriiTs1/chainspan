@@ -5,7 +5,7 @@ import { WalletControl } from "@/components/web3";
 
 export function Header() {
   return (
-    <header className="flex h-24 items-center justify-between">
+    <header className="flex h-20 items-center justify-between sm:h-24">
       <a href="#" className="flex items-center gap-3">
         <ChainSpanLogo />
 
