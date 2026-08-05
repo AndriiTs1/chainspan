@@ -28,6 +28,7 @@ type WalletDropdownProps = {
   onCopyAddress: () => void;
   onDisconnect: () => void;
   onSelectChain: (chainId: number) => void;
+  onSignMessage: () => void;
 };
 
 export const WalletDropdown = forwardRef<HTMLDivElement, WalletDropdownProps>(
@@ -49,6 +50,7 @@ export const WalletDropdown = forwardRef<HTMLDivElement, WalletDropdownProps>(
       onCopyAddress,
       onDisconnect,
       onSelectChain,
+      onSignMessage,
     },
     ref,
   ) {
@@ -90,6 +92,7 @@ export const WalletDropdown = forwardRef<HTMLDivElement, WalletDropdownProps>(
               isCopied={isCopied}
               onCopyAddress={onCopyAddress}
               onDisconnect={onDisconnect}
+              onSignMessage={onSignMessage}
             />
           </motion.div>
         ) : null}

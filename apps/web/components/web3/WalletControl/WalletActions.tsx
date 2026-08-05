@@ -1,4 +1,4 @@
-import { Check, Copy, ExternalLink, LogOut } from "lucide-react";
+import { Check, Copy, ExternalLink, LogOut, PenLine } from "lucide-react";
 
 type WalletActionsProps = {
   address: `0x${string}`;
@@ -6,6 +6,7 @@ type WalletActionsProps = {
   isCopied: boolean;
   onCopyAddress: () => void;
   onDisconnect: () => void;
+  onSignMessage: () => void;
 };
 
 export function WalletActions({
@@ -14,6 +15,7 @@ export function WalletActions({
   isCopied,
   onCopyAddress,
   onDisconnect,
+  onSignMessage,
 }: WalletActionsProps) {
   return (
     <>
@@ -42,6 +44,15 @@ export function WalletActions({
           View on explorer
         </a>
       ) : null}
+
+      <button
+        type="button"
+        onClick={onSignMessage}
+        className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-left text-xs text-zinc-400 transition hover:bg-white/5 hover:text-white"
+      >
+        <PenLine className="size-4 text-blue-300" />
+        Sign message
+      </button>
 
       <button
         type="button"

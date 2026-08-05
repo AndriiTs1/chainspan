@@ -20,6 +20,16 @@ import { wagmiConfig } from "@/lib/web3/wagmi-config";
 
 const SIGNING_REQUEST_TTL_MS = 5 * 60 * 1000;
 
+// Shared with the signing modal's preview so it can render the same
+// appName/domain the hook will actually sign with, without duplicating (and
+// risking drift from) this resolution logic.
+export function getSigningAppContext(): { appName: string; domain: string } {
+  return {
+    appName: process.env.NEXT_PUBLIC_APP_NAME ?? "ChainSpan",
+    domain: process.env.NEXT_PUBLIC_APP_DOMAIN ?? window.location.host,
+  };
+}
+
 export type MessageSigningState =
   | { status: "idle" }
   | { status: "preparing" }
@@ -115,8 +125,7 @@ export function useMessageSigning(): UseMessageSigningResult {
       const expiresAt = new Date(issuedAt.getTime() + SIGNING_REQUEST_TTL_MS);
 
       const request = buildSigningMessage({
-        appName: process.env.NEXT_PUBLIC_APP_NAME ?? "ChainSpan",
-        domain: process.env.NEXT_PUBLIC_APP_DOMAIN ?? window.location.host,
+        ...getSigningAppContext(),
         address: connection.address,
         chainId: connection.chainId,
         nonce: crypto.randomUUID(),

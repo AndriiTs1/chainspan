@@ -4,10 +4,12 @@ import { getSupportedChain } from "@chainspan/web3";
 import { useEffect, useId, useRef, useState } from "react";
 
 import { getFocusableElements, useDismissableLayer } from "@/hooks/use-dismissable-layer";
+import { useMessageSigning } from "@/hooks/use-message-signing";
 import { usePortfolio } from "@/hooks/use-portfolio";
 import { useWallet } from "@/hooks/use-wallet";
 
 import { ConnectWalletButton } from "./connect-wallet-button";
+import { MessageSigningDialog } from "./signing/MessageSigningDialog";
 import { formatBalance, shortenAddress } from "./utils/wallet-format";
 import { WalletDropdown } from "./WalletControl/WalletDropdown";
 import { WalletTrigger } from "./WalletControl/WalletTrigger";
@@ -28,12 +30,14 @@ export function WalletControl() {
   } = useWallet();
 
   const portfolio = usePortfolio();
+  const signing = useMessageSigning();
 
   const menuId = useId();
   const triggerRef = useRef<HTMLButtonElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
+  const [isSigningDialogOpen, setIsSigningDialogOpen] = useState(false);
 
   function closeDropdown() {
     setIsOpen(false);
@@ -103,6 +107,8 @@ export function WalletControl() {
 
   function disconnectWallet() {
     setIsOpen(false);
+    setIsSigningDialogOpen(false);
+    signing.reset();
     disconnect();
   }
 
@@ -112,6 +118,23 @@ export function WalletControl() {
     switchChain({
       chainId: nextChainId,
     });
+  }
+
+  function openSigningDialog() {
+    // Closing the dropdown first keeps at most one focus-trapped layer
+    // active at a time (the dropdown itself doesn't trap focus, but closing
+    // it avoids stacking it under the modal).
+    setIsOpen(false);
+
+    if (signing.status !== "idle") {
+      signing.reset();
+    }
+
+    setIsSigningDialogOpen(true);
+  }
+
+  function closeSigningDialog() {
+    setIsSigningDialogOpen(false);
   }
 
   return (
@@ -144,6 +167,17 @@ export function WalletControl() {
         onCopyAddress={copyAddress}
         onDisconnect={disconnectWallet}
         onSelectChain={selectChain}
+        onSignMessage={openSigningDialog}
+      />
+
+      <MessageSigningDialog
+        isOpen={isSigningDialogOpen}
+        onClose={closeSigningDialog}
+        triggerRef={triggerRef}
+        signing={signing}
+        address={address}
+        chainId={chainId}
+        chainName={chainName}
       />
     </div>
   );
