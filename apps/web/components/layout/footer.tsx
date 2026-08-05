@@ -24,7 +24,7 @@ const developerLinks = [
   { href: ROADMAP_URL, label: "Roadmap" },
 ];
 
-const techStack = ["Next.js", "React", "TypeScript", "wagmi", "viem"];
+const techStack = ["Next.js", "React", "React Native", "TypeScript", "wagmi", "viem"];
 
 const footerLinkClassName =
   "inline-flex items-center gap-1.5 rounded-md text-sm text-zinc-400 transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/70";
