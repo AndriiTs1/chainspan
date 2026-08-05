@@ -4,6 +4,7 @@ import { ChainSpanScene } from "@/components/hero/chainspan-scene";
 import { HeroSection } from "@/components/hero/hero-section";
 import { FeaturesSection } from "@/components/home/features-section";
 import { StatsSection } from "@/components/home/stats-section";
+import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import { Container } from "@/components/ui/container";
 
@@ -22,6 +23,8 @@ export default function Home() {
         <FeaturesSection />
 
         <StatsSection />
+
+        <Footer />
       </Container>
     </main>
   );
