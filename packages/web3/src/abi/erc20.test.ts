@@ -42,6 +42,15 @@ describe("erc20Abi", () => {
     expect(fn?.outputs).toEqual([{ name: "", type: "string" }]);
   });
 
+  it("exposes totalSupply() -> uint256", () => {
+    const fn = findFunction("totalSupply");
+
+    expect(fn).toBeDefined();
+    expect(fn?.stateMutability).toBe("view");
+    expect(fn?.inputs).toEqual([]);
+    expect(fn?.outputs).toEqual([{ name: "", type: "uint256" }]);
+  });
+
   it("does not expose any write functions", () => {
     const writeFunctionNames = erc20Abi
       .filter((item) => item.type === "function")

@@ -59,3 +59,19 @@ export type {
   SigningResult,
   VerificationResult,
 } from "./signing.types";
+
+export { buildErc20ContractSnapshot } from "./contract-read";
+
+export type {
+  BuildErc20SnapshotParams,
+  ContractFieldRead,
+} from "./contract-read";
+
+export type {
+  ContractReadErrorCategory,
+  ContractReadFailure,
+  Erc20ContractReadResult,
+  Erc20ContractSnapshot,
+  Erc20FieldComparison,
+  Erc20MetadataComparison,
+} from "./contract-read.types";

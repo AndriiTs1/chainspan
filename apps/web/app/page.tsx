@@ -7,6 +7,7 @@ import { StatsSection } from "@/components/home/stats-section";
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import { Container } from "@/components/ui/container";
+import { ContractInspector } from "@/components/web3/contract-read/ContractInspector";
 
 export default function Home() {
   return (
@@ -23,6 +24,8 @@ export default function Home() {
         <FeaturesSection />
 
         <StatsSection />
+
+        <ContractInspector />
 
         <Footer />
       </Container>
