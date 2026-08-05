@@ -25,7 +25,7 @@ export const WalletTrigger = forwardRef<HTMLButtonElement, WalletTriggerProps>(
         aria-expanded={isOpen}
         aria-haspopup="dialog"
         aria-controls={menuId}
-        className="group flex items-center gap-2 rounded-xl border border-blue-300/15 bg-[#070b14]/80 px-2.5 py-1.5 text-left shadow-[0_10px_30px_rgba(0,0,0,0.2)] backdrop-blur-xl transition hover:border-blue-300/30 hover:bg-[#0a101d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/50 sm:min-w-51.25 sm:gap-3 sm:px-3 sm:py-2"
+        className="group flex items-center gap-2 rounded-xl border border-blue-300/15 bg-[#070b14]/80 px-2.5 py-1.5 text-left shadow-[0_10px_30px_rgba(0,0,0,0.2)] backdrop-blur-xl transition hover:border-blue-300/30 hover:bg-[#0a101d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/70 sm:min-w-51.25 sm:gap-3 sm:px-3 sm:py-2"
       >
         <span
           aria-hidden="true"

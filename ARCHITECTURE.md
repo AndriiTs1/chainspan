@@ -1700,6 +1700,16 @@ This section tracks the actual, project-specific implementation stages of ChainS
 - signature verification
 - rejected-request handling
 
+#### Stage 6.5. Contract Inspector (Curated ERC-20 Reads)
+
+- curated ERC-20 contract lookup via the existing token registry (no separate contract address registry)
+- typed `name` / `symbol` / `decimals` / `totalSupply` reads over public RPC, independent of wallet connection
+- curated-vs-on-chain metadata comparison with an explicit `unavailable` state (a failed read is never shown as a mismatch)
+- custom accessible listbox selectors for network and token
+- read-only landing page section, no write capability
+
+Delivered out of the general roadmap's numeric order (ahead of Stage 7 Transaction Lifecycle) as an intentional sequencing choice; functionally corresponds to the read-only portion of the general roadmap's Stage 8 (Smart Contract Interaction).
+
 #### Stage 7. Transaction Lifecycle
 
 - native asset transfer form

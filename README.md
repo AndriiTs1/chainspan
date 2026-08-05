@@ -41,6 +41,7 @@ chainspan/
 - ✅ **Portfolio UI** — loading / empty / partial-error / full-error / unsupported-network states all handled explicitly, not collapsed into a single spinner
 - ✅ **Accessibility** — focus trap, focus restoration, keyboard navigation, `prefers-reduced-motion` support across all interactive wallet UI
 - ✅ **Message signing** (EIP-191, ERC-6492-compatible client-side verification) — preview-before-sign UI, explicit lifecycle states (idle → preparing → awaiting signature → verifying → verified / rejected / failed), and account/network drift detection after verification
+- ✅ **Contract Inspector** — reads `name`/`symbol`/`decimals`/`totalSupply` directly from curated ERC-20 contracts over public RPC (no wallet required), comparing on-chain metadata against the trusted registry and flagging mismatches without treating them as errors
 - 📋 **Mobile app** — Expo scaffold present in the monorepo, not yet implemented
 
 ## Technology stack
@@ -87,7 +88,7 @@ pnpm build:web                                   # production build
 pnpm --filter @chainspan/web3 test
 ```
 
-Unit tests currently cover `packages/web3` — chain configuration, curated token registry, portfolio domain logic, and message-signing request/verification helpers. All deterministic, no live RPC calls. `apps/web` does not yet have a test runner configured.
+Unit tests currently cover `packages/web3` — chain configuration, curated token registry, portfolio domain logic, message-signing request/verification helpers, and ERC-20 contract-read snapshot normalization. All deterministic, no live RPC calls. `apps/web` does not yet have a test runner configured.
 
 ## Deployment
 
@@ -102,9 +103,10 @@ Deployed on [Vercel](https://vercel.com), auto-deploying `main` on every push. `
 - Shared token foundation and curated token registry
 - Wallet portfolio — data layer and UI
 - Message signing (EIP-191, ERC-6492-compatible verification, full lifecycle UI)
+- Contract Inspector — curated ERC-20 reads with on-chain/curated metadata comparison
 
 **Planned**
-- Smart contract read/write examples
+- Smart contract write examples
 - Token operations (allowance / approve / transfer)
 - Cross-chain domain model
 - Mobile wallet integration
