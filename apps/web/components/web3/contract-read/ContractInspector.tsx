@@ -1,35 +1,44 @@
 "use client";
 
 import { getSupportedChain, getTokensForChain, supportedChains } from "@chainspan/web3";
-import type {
-  ContractReadFailure,
-  Erc20ContractSnapshot,
-  Erc20FieldComparison,
-} from "@chainspan/web3";
-import type { ChangeEvent, ReactNode } from "react";
+import type { ContractReadFailure } from "@chainspan/web3";
+import { Loader2 } from "lucide-react";
 import { useState } from "react";
-import { mainnet } from "viem/chains";
+import { arbitrum, base, mainnet, optimism, polygon, sepolia } from "viem/chains";
 
 import { useErc20ContractRead } from "@/hooks/use-erc20-contract-read";
 import { Card } from "@/components/ui/card";
+import { Selector } from "@/components/ui/selector";
+import type { SelectorOption } from "@/components/ui/selector";
 
-import { formatBalance } from "../utils/wallet-format";
+import { MetadataComparison } from "./MetadataComparison";
+import { TokenSummary } from "./TokenSummary";
+import { TotalSupplyCard } from "./TotalSupplyCard";
 
-const selectClassName =
-  "mt-1.5 w-full rounded-lg border border-white/10 bg-white/3 px-3 py-2 text-sm text-white transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/70";
-
-const fieldLabelClassName = "text-xs font-medium text-zinc-500";
-
-const toneTextClassName: Record<"good" | "caution" | "neutral", string> = {
-  good: "text-emerald-300",
-  caution: "text-amber-300",
-  neutral: "text-zinc-500",
+const CHAIN_BADGE_LABEL: Record<number, string> = {
+  [mainnet.id]: "ETH",
+  [base.id]: "BASE",
+  [arbitrum.id]: "ARB",
+  [optimism.id]: "OP",
+  [polygon.id]: "POLY",
+  [sepolia.id]: "SEP",
 };
 
-function toneForComparison(comparison: Erc20FieldComparison): "good" | "caution" | "neutral" {
-  if (comparison === "mismatch") return "caution";
-  if (comparison === "unavailable") return "neutral";
-  return "good";
+function ChainBadge({ chainId }: { chainId: number }) {
+  return (
+    <span className="flex h-5 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 px-1.5 text-[9px] font-semibold tracking-wide text-zinc-300">
+      {CHAIN_BADGE_LABEL[chainId] ?? "?"}
+    </span>
+  );
+}
+
+function LiveRpcBadge() {
+  return (
+    <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-400/20 bg-emerald-400/8 px-2.5 py-1 text-[11px] font-medium text-emerald-300">
+      <span className="size-1.5 rounded-full bg-emerald-400" aria-hidden="true" />
+      Live RPC
+    </span>
+  );
 }
 
 function contractReadFailureMessage(failure: ContractReadFailure): string {
@@ -46,112 +55,8 @@ function contractReadFailureMessage(failure: ContractReadFailure): string {
   }
 }
 
-type MetadataRowProps = {
-  label: string;
-  value: string;
-  tone?: "good" | "caution" | "neutral";
-};
-
-function MetadataRow({ label, value, tone }: MetadataRowProps) {
-  return (
-    <div className="flex items-start justify-between gap-3">
-      <dt className="shrink-0 text-zinc-500">{label}</dt>
-      <dd
-        className={[
-          "min-w-0 flex-1 text-right break-all",
-          tone ? toneTextClassName[tone] : "text-zinc-200",
-        ].join(" ")}
-      >
-        {value}
-      </dd>
-    </div>
-  );
-}
-
-function MetadataColumn({ title, children }: { title: string; children: ReactNode }) {
-  return (
-    <div className="rounded-xl border border-white/8 bg-white/3 p-3">
-      <p className="text-[11px] font-medium uppercase tracking-[0.15em] text-zinc-600">{title}</p>
-      <dl className="mt-2.5 space-y-2 text-xs">{children}</dl>
-    </div>
-  );
-}
-
-function SnapshotView({ snapshot }: { snapshot: Erc20ContractSnapshot }) {
-  const chain = getSupportedChain(snapshot.chainId);
-  const explorerUrl = chain?.blockExplorers?.default.url;
-  const hasMismatch = Object.values(snapshot.metadataComparison).some((value) => value === "mismatch");
-
-  return (
-    <div className="space-y-4">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <p className="text-lg font-semibold text-white">{snapshot.token.symbol}</p>
-          <p className="text-xs text-zinc-500">
-            {snapshot.token.name} · {snapshot.token.issuer}
-          </p>
-        </div>
-
-        {explorerUrl ? (
-          <a
-            href={`${explorerUrl}/address/${snapshot.address}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-md text-xs text-blue-300 transition hover:text-blue-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/70"
-          >
-            View on explorer
-          </a>
-        ) : null}
-      </div>
-
-      <p className="break-all font-mono text-[11px] text-zinc-500">{snapshot.address}</p>
-
-      <div className="grid gap-3 sm:grid-cols-2">
-        <MetadataColumn title="Curated (trusted)">
-          <MetadataRow label="Name" value={snapshot.token.name} />
-          <MetadataRow label="Symbol" value={snapshot.token.symbol} />
-          <MetadataRow label="Decimals" value={String(snapshot.token.decimals)} />
-        </MetadataColumn>
-
-        <MetadataColumn title="On-chain (contract-reported)">
-          <MetadataRow
-            label="Name"
-            value={snapshot.onChainName ?? "Unavailable"}
-            tone={toneForComparison(snapshot.metadataComparison.name)}
-          />
-          <MetadataRow
-            label="Symbol"
-            value={snapshot.onChainSymbol ?? "Unavailable"}
-            tone={toneForComparison(snapshot.metadataComparison.symbol)}
-          />
-          <MetadataRow
-            label="Decimals"
-            value={String(snapshot.onChainDecimals)}
-            tone={toneForComparison(snapshot.metadataComparison.decimals)}
-          />
-        </MetadataColumn>
-      </div>
-
-      {hasMismatch ? (
-        <p
-          role="status"
-          className="rounded-lg border border-amber-400/20 bg-amber-400/8 px-3 py-2.5 text-xs leading-5 text-amber-200"
-        >
-          On-chain metadata differs from the curated registry entry for this token.
-        </p>
-      ) : null}
-
-      <div className="rounded-xl border border-white/8 bg-white/3 p-3">
-        <p className="text-[11px] text-zinc-500">Total supply</p>
-        <p className="mt-1 break-all font-mono text-base text-white">
-          {formatBalance(snapshot.totalSupply, snapshot.onChainDecimals, snapshot.token.symbol)}
-        </p>
-      </div>
-    </div>
-  );
-}
-
 export function ContractInspector() {
+  const [openSelector, setOpenSelector] = useState<"chain" | "token" | null>(null);
   const [selectedChainId, setSelectedChainId] = useState<number>(mainnet.id);
   const [selectedAddress, setSelectedAddress] = useState<`0x${string}` | undefined>(
     () => getTokensForChain(mainnet.id)[0]?.address,
@@ -159,97 +64,128 @@ export function ContractInspector() {
 
   const tokensForChain = getTokensForChain(selectedChainId);
   const chainName = getSupportedChain(selectedChainId)?.name ?? `Chain ${selectedChainId}`;
-
   const result = useErc20ContractRead(selectedChainId, selectedAddress);
 
-  function handleChainChange(event: ChangeEvent<HTMLSelectElement>) {
-    const nextChainId = Number(event.target.value);
+  function handleChainChange(value: string) {
+    const nextChainId = Number(value);
     const nextTokens = getTokensForChain(nextChainId);
 
     setSelectedChainId(nextChainId);
     setSelectedAddress(nextTokens[0]?.address);
   }
 
-  function handleTokenChange(event: ChangeEvent<HTMLSelectElement>) {
-    setSelectedAddress(event.target.value as `0x${string}`);
+  function handleTokenChange(value: string) {
+    setSelectedAddress(value as `0x${string}`);
   }
+
+  const chainOptions: SelectorOption<string>[] = supportedChains.map((chain) => ({
+    value: String(chain.id),
+    label: (
+      <>
+        <ChainBadge chainId={chain.id} />
+        <span>{chain.name}</span>
+      </>
+    ),
+  }));
+
+  const tokenOptions: SelectorOption<string>[] = tokensForChain.map((token) => ({
+    value: token.address,
+    label: (
+      <>
+        <span className="font-medium text-white">{token.symbol}</span>
+        <span className="text-zinc-500">— {token.name}</span>
+      </>
+    ),
+    description: token.issuer,
+  }));
 
   return (
     <section id="contract-inspector" className="pb-8">
       <div className="mb-6 max-w-2xl">
-        <p className="text-xs font-medium uppercase tracking-[0.3em] text-blue-200/75">
-          Contract Inspector
-        </p>
+        <div className="flex flex-wrap items-center gap-3">
+          <p className="text-xs font-medium tracking-[0.3em] text-blue-200/75 uppercase">
+            Contract Inspector
+          </p>
+
+          <LiveRpcBadge />
+        </div>
 
         <h2 className="mt-2 text-2xl font-semibold text-white sm:text-3xl">
-          Read a curated ERC-20 contract directly
+          Inspect verified ERC-20 contracts with live on-chain data
         </h2>
 
         <p className="mt-3 text-sm leading-6 text-zinc-400">
-          Data below is read live from the selected contract over public RPC - no wallet
-          connection required. Only tokens already verified in ChainSpan&apos;s curated registry
-          can be inspected here.
+          Read contract metadata and total supply directly through public RPC, then compare it with
+          ChainSpan&apos;s curated registry.
         </p>
       </div>
 
       <Card className="p-5 sm:p-6">
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label htmlFor="contract-inspector-chain" className={fieldLabelClassName}>
+            <label htmlFor="contract-inspector-chain" className="text-xs font-medium text-zinc-500">
               Network
             </label>
 
-            <select
-              id="contract-inspector-chain"
-              value={selectedChainId}
-              onChange={handleChainChange}
-              className={selectClassName}
-            >
-              {supportedChains.map((chain) => (
-                <option key={chain.id} value={chain.id}>
-                  {chain.name}
-                </option>
-              ))}
-            </select>
+            <div className="mt-1.5">
+              <Selector
+                id="contract-inspector-chain"
+                label="Network"
+                options={chainOptions}
+                value={String(selectedChainId)}
+                onChange={handleChainChange}
+                isOpen={openSelector === "chain"}
+                onOpenChange={(isOpen) => setOpenSelector(isOpen ? "chain" : null)}
+              />
+            </div>
           </div>
 
           <div>
-            <label htmlFor="contract-inspector-token" className={fieldLabelClassName}>
+            <label htmlFor="contract-inspector-token" className="text-xs font-medium text-zinc-500">
               Token
             </label>
 
-            {tokensForChain.length > 0 ? (
-              <select
-                id="contract-inspector-token"
-                value={selectedAddress}
-                onChange={handleTokenChange}
-                className={selectClassName}
-              >
-                {tokensForChain.map((token) => (
-                  <option key={token.address} value={token.address}>
-                    {token.symbol} — {token.name}
-                  </option>
-                ))}
-              </select>
-            ) : (
-              <p
-                role="status"
-                className="mt-1.5 rounded-lg border border-white/10 bg-white/3 px-3 py-2 text-sm text-zinc-500"
-              >
-                No curated tokens are registered on {chainName} yet.
-              </p>
-            )}
+            <div className="mt-1.5">
+              {tokensForChain.length > 0 ? (
+                <Selector
+                  id="contract-inspector-token"
+                  label="Token"
+                  options={tokenOptions}
+                  value={selectedAddress}
+                  onChange={handleTokenChange}
+                  isOpen={openSelector === "token"}
+                  onOpenChange={(isOpen) => setOpenSelector(isOpen ? "token" : null)}
+                />
+              ) : (
+                <p
+                  role="status"
+                  className="rounded-lg border border-white/10 bg-white/3 px-3 py-2.5 text-sm text-zinc-500"
+                >
+                  No curated tokens are registered on {chainName} yet.
+                </p>
+              )}
+            </div>
           </div>
         </div>
 
-        <div className="mt-5">
+        <div className="mt-5 space-y-4">
           {result.status === "loading" ? (
-            <p role="status" className="px-1 py-6 text-center text-sm text-zinc-400">
+            <p
+              role="status"
+              className="flex items-center justify-center gap-2 px-1 py-8 text-sm text-zinc-400"
+            >
+              <Loader2 className="size-4 animate-spin" aria-hidden="true" />
               Reading contract...
             </p>
           ) : null}
 
-          {result.status === "success" ? <SnapshotView snapshot={result.snapshot} /> : null}
+          {result.status === "success" ? (
+            <>
+              <TokenSummary snapshot={result.snapshot} />
+              <MetadataComparison snapshot={result.snapshot} />
+              <TotalSupplyCard snapshot={result.snapshot} />
+            </>
+          ) : null}
 
           {result.status === "error" ? (
             <p
@@ -260,13 +196,13 @@ export function ContractInspector() {
             </p>
           ) : null}
 
-          {result.status === "unsupported_chain" || result.status === "token_not_registered" ? (
+          {result.status === "unsupported_chain" ? (
+            <p className="px-1 py-2 text-sm text-zinc-500">This network isn&apos;t supported.</p>
+          ) : null}
+
+          {result.status === "token_not_registered" ? (
             <p className="px-1 py-2 text-sm text-zinc-500">
-              {contractReadFailureMessage(
-                result.status === "unsupported_chain"
-                  ? { category: "unsupported_chain" }
-                  : { category: "token_not_registered" },
-              )}
+              This token isn&apos;t in the curated registry.
             </p>
           ) : null}
         </div>

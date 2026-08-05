@@ -1,21 +1,35 @@
 import type { SVGProps } from "react";
 
 import { ChainSpanLogo } from "@/components/brand/chainspan-logo";
-import { Card } from "@/components/ui/card";
 
 const GITHUB_URL = "https://github.com/AndriiTs1/chainspan";
-const ARCHITECTURE_URL =
-  "https://github.com/AndriiTs1/chainspan/blob/main/ARCHITECTURE.md";
+const README_URL = "https://github.com/AndriiTs1/chainspan#readme";
+const ARCHITECTURE_URL = "https://github.com/AndriiTs1/chainspan/blob/main/ARCHITECTURE.md";
+const ROADMAP_URL =
+  "https://github.com/AndriiTs1/chainspan/blob/main/ARCHITECTURE.md#18-implementation-roadmap";
 
+// Provided directly by the repository owner - not guessed.
 const LINKEDIN_URL = "https://www.linkedin.com/in/andrii-tsiurupa-ch/";
 
 const navLinks = [
   { href: "#platform", label: "Platform" },
   { href: "#ecosystem", label: "Ecosystem" },
+  { href: "#contract-inspector", label: "Contract Inspector" },
 ];
 
+const developerLinks = [
+  { href: GITHUB_URL, label: "GitHub" },
+  { href: LINKEDIN_URL, label: "LinkedIn" },
+  { href: README_URL, label: "README" },
+  { href: ROADMAP_URL, label: "Roadmap" },
+];
+
+const techStack = ["Next.js", "React", "TypeScript", "wagmi", "viem"];
+
 const footerLinkClassName =
-  "inline-flex items-center gap-1.5 rounded-md text-zinc-400 transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/70";
+  "inline-flex items-center gap-1.5 rounded-md text-sm text-zinc-400 transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/70";
+
+const columnLabelClassName = "text-[11px] font-medium uppercase tracking-[0.2em] text-zinc-600";
 
 const iconLinkClassName =
   "flex size-9 items-center justify-center rounded-lg border border-white/10 bg-white/3 text-zinc-400 transition hover:border-blue-300/20 hover:bg-white/6 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/70";
@@ -36,76 +50,122 @@ function LinkedinIcon(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+function isExternalLink(href: string): boolean {
+  return href.startsWith("http");
+}
+
 export function Footer() {
   return (
-    <footer className="mt-10 mb-6">
-      <Card className="px-5 py-5 sm:px-6">
-        <div className="mx-auto flex max-w-3xl flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-2.5">
-            <ChainSpanLogo className="size-8" iconClassName="size-4" />
+    <footer className="mt-10 border-t border-white/8 bg-linear-to-b from-white/[0.015] to-transparent">
+      <div className="pt-10 pb-8">
+        <div className="mx-auto grid max-w-6xl gap-8 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1fr]">
+          <div>
+            <div className="flex items-center gap-2.5">
+              <ChainSpanLogo className="size-9" iconClassName="size-4.5" />
 
-            <div>
-              <p className="text-sm font-semibold tracking-tight text-white">
-                ChainSpan
-              </p>
-
-              <p className="text-xs text-zinc-500">
-                Production-oriented Web3 engineering platform.
-              </p>
+              <span className="text-base font-semibold tracking-tight text-white">ChainSpan</span>
             </div>
+
+            <p className="mt-3 max-w-64 text-sm leading-6 text-zinc-500">
+              Production-oriented Web3 engineering platform.
+            </p>
+
+            <p className="mt-2 max-w-64 text-xs leading-5 text-zinc-600">
+              Built for developers exploring production Web3 architecture.
+            </p>
           </div>
 
-          <nav
-            aria-label="Footer navigation"
-            className="flex flex-wrap items-center gap-x-6 gap-y-3"
-          >
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-2.5 text-sm">
+          <div>
+            <p className={columnLabelClassName}>Navigation</p>
+
+            <ul className="mt-3 space-y-2.5">
               {navLinks.map((link) => (
-                <a key={link.href} href={link.href} className={footerLinkClassName}>
-                  {link.label}
-                </a>
+                <li key={link.href}>
+                  <a href={link.href} className={footerLinkClassName}>
+                    {link.label}
+                  </a>
+                </li>
               ))}
 
-              <a
-                href={ARCHITECTURE_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={footerLinkClassName}
-              >
-                Architecture
-              </a>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <a
-                href={GITHUB_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="ChainSpan on GitHub"
-                className={iconLinkClassName}
-              >
-                <GithubIcon className="size-4" aria-hidden="true" />
-              </a>
-
-              {LINKEDIN_URL ? (
+              <li>
                 <a
-                  href={LINKEDIN_URL}
+                  href={ARCHITECTURE_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Andrii Tsiurupa on LinkedIn"
-                  className={iconLinkClassName}
+                  className={footerLinkClassName}
                 >
-                  <LinkedinIcon className="size-4" aria-hidden="true" />
+                  Architecture
                 </a>
-              ) : null}
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <p className={columnLabelClassName}>Developer</p>
+
+            <ul className="mt-3 space-y-2.5">
+              {developerLinks.map((link) => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    target={isExternalLink(link.href) ? "_blank" : undefined}
+                    rel={isExternalLink(link.href) ? "noopener noreferrer" : undefined}
+                    className={footerLinkClassName}
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <p className={columnLabelClassName}>Tech</p>
+
+            <div className="mt-3 flex flex-wrap gap-1.5">
+              {techStack.map((name) => (
+                <span
+                  key={name}
+                  className="inline-flex items-center rounded-md border border-white/10 bg-white/3 px-2 py-1 text-[11px] text-zinc-400"
+                >
+                  {name}
+                </span>
+              ))}
             </div>
-          </nav>
+          </div>
         </div>
 
-        <div className="mx-auto mt-5 max-w-3xl border-t border-white/6 pt-4 text-center text-xs text-zinc-600">
-          © 2026 ChainSpan. Built by Andrii Tsiurupa.
+        <div className="mx-auto mt-8 flex max-w-6xl flex-col gap-4 border-t border-white/6 pt-5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="text-center sm:text-left">
+            <p className="text-xs text-zinc-600">© 2026 ChainSpan. Built by Andrii Tsiurupa.</p>
+            <p className="mt-0.5 text-[11px] text-zinc-700">Deployed on Vercel</p>
+          </div>
+
+          <div className="flex items-center justify-center gap-2">
+            <a
+              href={GITHUB_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="ChainSpan on GitHub"
+              className={iconLinkClassName}
+            >
+              <GithubIcon className="size-4" aria-hidden="true" />
+            </a>
+
+            {LINKEDIN_URL ? (
+              <a
+                href={LINKEDIN_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Andrii Tsiurupa on LinkedIn"
+                className={iconLinkClassName}
+              >
+                <LinkedinIcon className="size-4" aria-hidden="true" />
+              </a>
+            ) : null}
+          </div>
         </div>
-      </Card>
+      </div>
     </footer>
   );
 }
