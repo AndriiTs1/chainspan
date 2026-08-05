@@ -101,8 +101,8 @@ export function ContractInspector() {
 
   return (
     <section id="contract-inspector" className="pb-8">
-      <div className="mb-6 max-w-2xl">
-        <div className="flex flex-wrap items-center gap-3">
+      <div className="mb-6 max-w-2xl text-center sm:text-left">
+        <div className="flex flex-wrap items-center justify-center gap-3 sm:justify-start">
           <p className="text-xs font-medium tracking-[0.3em] text-blue-200/75 uppercase">
             Contract Inspector
           </p>
@@ -110,7 +110,7 @@ export function ContractInspector() {
           <LiveRpcBadge />
         </div>
 
-        <h2 className="mt-2 text-2xl font-semibold text-white sm:text-3xl">
+        <h2 className="mt-2 text-xl font-semibold text-white sm:text-3xl">
           Inspect verified ERC-20 contracts with live on-chain data
         </h2>
 
