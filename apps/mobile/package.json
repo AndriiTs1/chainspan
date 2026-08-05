@@ -3,6 +3,7 @@
   "main": "expo-router/entry",
   "version": "1.0.0",
   "dependencies": {
+    "@chainspan/web3": "workspace:*",
     "@expo/ui": "~57.0.8",
     "expo": "~57.0.9",
     "expo-constants": "~57.0.8",

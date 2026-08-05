@@ -1,65 +1,82 @@
-/**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
- */
-
 import '@/global.css';
 
 import { Platform } from 'react-native';
 
+// ChainSpan mobile is dark-only for Stage 8.1, matching the already-shipped
+// Web v1.0 visual language. There is no light variant - see the Stage 8.1
+// architecture doc for the (still open) light/dark decision.
 export const Colors = {
-  light: {
-    text: '#000000',
-    background: '#ffffff',
-    backgroundElement: '#F0F0F3',
-    backgroundSelected: '#E0E1E6',
-    textSecondary: '#60646C',
-  },
-  dark: {
-    text: '#ffffff',
-    background: '#000000',
-    backgroundElement: '#212225',
-    backgroundSelected: '#2E3135',
-    textSecondary: '#B0B4BA',
-  },
+  background: '#02040a',
+  surface: '#080d19',
+  surfaceElevated: '#070b14',
+  border: 'rgba(255, 255, 255, 0.08)',
+  borderBrand: 'rgba(147, 197, 253, 0.15)',
+  textPrimary: '#ffffff',
+  textSecondary: '#a1a1aa',
+  textMuted: '#71717a',
+  brandBlue: '#3b82f6',
+  brandViolet: '#7c3aed',
+  success: '#34d399',
+  caution: '#fbbf24',
+  danger: '#f87171',
 } as const;
 
-export type ThemeColor = keyof typeof Colors.light & keyof typeof Colors.dark;
+export type ColorToken = keyof typeof Colors;
 
 export const Fonts = Platform.select({
   ios: {
-    /** iOS `UIFontDescriptorSystemDesignDefault` */
     sans: 'system-ui',
-    /** iOS `UIFontDescriptorSystemDesignSerif` */
-    serif: 'ui-serif',
-    /** iOS `UIFontDescriptorSystemDesignRounded` */
-    rounded: 'ui-rounded',
-    /** iOS `UIFontDescriptorSystemDesignMonospaced` */
     mono: 'ui-monospace',
   },
   default: {
     sans: 'normal',
-    serif: 'serif',
-    rounded: 'normal',
     mono: 'monospace',
   },
   web: {
     sans: 'var(--font-display)',
-    serif: 'var(--font-serif)',
-    rounded: 'var(--font-rounded)',
     mono: 'var(--font-mono)',
   },
 });
 
+// 4px base unit - the same scale already implicitly in use across Web
+// (Tailwind's default spacing), formalized here as the shared spec.
 export const Spacing = {
-  half: 2,
-  one: 4,
-  two: 8,
-  three: 16,
-  four: 24,
-  five: 32,
-  six: 64,
+  2: 2,
+  4: 4,
+  6: 6,
+  8: 8,
+  10: 10,
+  12: 12,
+  16: 16,
+  20: 20,
+  24: 24,
+  32: 32,
+  40: 40,
+  48: 48,
 } as const;
 
-export const BottomTabInset = Platform.select({ ios: 50, android: 80 }) ?? 0;
-export const MaxContentWidth = 800;
+export const Radius = {
+  md: 6,
+  lg: 8,
+  xl: 12,
+  xxl: 16,
+  full: 9999,
+} as const;
+
+export const IconSize = {
+  sm: 16,
+  md: 20,
+  lg: 24,
+} as const;
+
+// Duration only - easing is applied by each animation call site (Reanimated
+// doesn't have a single global "MotionConfig" equivalent). No animations are
+// needed for Stage 8.1 itself; these exist so later stages share one scale
+// instead of inventing per-screen numbers.
+export const Motion = {
+  fast: 150,
+  base: 200,
+  slow: 300,
+} as const;
+
+export const MinTouchTarget = 44;
