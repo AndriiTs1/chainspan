@@ -1,5 +1,6 @@
 "use client";
 
+import { classifyConnectionError } from "@chainspan/web3";
 import { AnimatePresence, motion } from "framer-motion";
 import { Globe2, Smartphone, Wallet, X } from "lucide-react";
 import { useRef, useState } from "react";
@@ -33,19 +34,6 @@ const modalPanelClassName = [
 
 const connectionErrorMessage =
   "Connection failed. Check your wallet or internet connection and try again.";
-
-function isUserCancellation(error: Error): boolean {
-  const message = error.message.toLowerCase();
-
-  return (
-    error.name === "UserRejectedRequestError" ||
-    message.includes("user rejected") ||
-    message.includes("user denied") ||
-    message.includes("request rejected") ||
-    message.includes("connection request reset") ||
-    message.includes("connection request expired")
-  );
-}
 
 export function ConnectWalletButton() {
   const { connectors, connect, isConnected, isConnectPending } = useWallet();
@@ -123,7 +111,7 @@ export function ConnectWalletButton() {
     } catch (error) {
       setPendingConnectorId(null);
 
-      if (error instanceof Error && isUserCancellation(error)) {
+      if (classifyConnectionError(error).category === "user_rejection") {
         setConnectionError(null);
         return;
       }

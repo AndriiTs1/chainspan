@@ -10,6 +10,11 @@ import { Card } from '@/components/ui/card';
 import { PrimaryButton } from '@/components/ui/primary-button';
 import { Screen } from '@/components/ui/screen';
 import { Colors, IconSize, Spacing } from '@/constants/theme';
+import { useWallet } from '@/hooks/use-wallet';
+
+function shortenAddress(address: string): string {
+  return `${address.slice(0, 6)}...${address.slice(-4)}`;
+}
 
 function SectionLabel({ children }: { children: string }) {
   return (
@@ -45,11 +50,12 @@ function QuickActionCard({ label, sf, md, onPress }: QuickAction) {
   );
 }
 
-// Wallet Status / Portfolio Preview stay honest about being empty states -
-// no fabricated balances or connection state. Quick Actions navigate to
-// already-existing Stage 8.1 routes; none of them are wired to real Web3
-// behavior yet (that starts in Stage 8.3).
+// Portfolio Preview stays an honest empty state - reads arrive in Stage
+// 8.4, so it deliberately isn't wired to the wallet's connected address yet.
+// Quick Actions navigate to already-existing Stage 8.1 routes.
 export default function DashboardScreen() {
+  const wallet = useWallet();
+
   const quickActions: QuickAction[] = [
     { label: 'Explorer', sf: 'magnifyingglass', md: 'search', onPress: () => router.push('/explorer') },
     { label: 'Sign Message', sf: 'signature', md: 'edit_square', onPress: () => router.push('/sign') },
@@ -72,16 +78,33 @@ export default function DashboardScreen() {
       <Card style={styles.cardContent}>
         <View style={styles.rowCenter}>
           <SymbolView
-            name={{ ios: 'wallet.pass', android: 'account_balance_wallet', web: 'account_balance_wallet' }}
+            name={{
+              ios: wallet.isConnected ? 'checkmark.circle.fill' : 'wallet.pass',
+              android: wallet.isConnected ? 'check_circle' : 'account_balance_wallet',
+              web: wallet.isConnected ? 'check_circle' : 'account_balance_wallet',
+            }}
             size={IconSize.lg}
-            tintColor={Colors.textSecondary}
+            tintColor={wallet.isConnected ? Colors.success : Colors.textSecondary}
           />
-          <AppText variant="heading">Wallet not connected</AppText>
+          <AppText variant="heading">
+            {wallet.isConnected
+              ? 'Wallet connected'
+              : wallet.isReconnecting
+                ? 'Restoring session'
+                : 'Wallet not connected'}
+          </AppText>
         </View>
         <AppText variant="body" color="secondary">
-          Wallet integration arrives in Stage 8.3.
+          {wallet.isConnected && wallet.address
+            ? shortenAddress(wallet.address)
+            : wallet.isReconnecting
+              ? 'Checking for a previous session...'
+              : 'Connect a wallet to view your portfolio.'}
         </AppText>
-        <PrimaryButton label="Open Wallet" onPress={() => router.push('/wallet')} />
+        <PrimaryButton
+          label={wallet.isConnected ? 'Manage Wallet' : 'Open Wallet'}
+          onPress={() => router.push('/wallet')}
+        />
       </Card>
 
       <View style={styles.section}>

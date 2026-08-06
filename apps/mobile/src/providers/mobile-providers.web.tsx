@@ -4,11 +4,13 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { Colors } from '@/constants/theme';
 
-// Adapts expo-router's own ThemeProvider (it already wraps React Navigation's
-// theme context, used for native chrome like headers) instead of introducing
-// a second, competing theme provider. Only the colors are overridden - the
-// rest of DarkTheme (fonts, etc.) is kept as-is since ChainSpan mobile is
-// dark-only already, DarkTheme is the correct base to start from.
+// Web preview never wires Wagmi/AppKit - Expo Router server-renders the
+// first request on Node, and the Reown SDK's WalletConnect connector
+// touches `window` unconditionally during construction, crashing that Node
+// process. wagmi-config.ts (which calls createAppKit()) is only imported by
+// the .native.tsx variant of this file, so it never enters the web bundle's
+// module graph at all - not merely "not called" but entirely excluded from
+// this platform's build. See use-wallet.web.ts for the matching no-op hook.
 const chainSpanNavigationTheme = {
   ...DarkTheme,
   colors: {
@@ -22,9 +24,6 @@ const chainSpanNavigationTheme = {
   },
 };
 
-// QueryClientProvider intentionally not included yet - no data-fetching
-// hooks exist in Stage 8.1 (Wallet/Portfolio/Explorer reads land in later
-// stages), so adding TanStack Query now would be an unused dependency.
 export function MobileProviders({ children }: { children: ReactNode }) {
   return (
     <SafeAreaProvider>

@@ -47,6 +47,13 @@ export {
   isSigningRequestExpired,
 } from "./signing";
 
+export { classifyConnectionError } from "./connection";
+
+export type {
+  ConnectionError,
+  ConnectionErrorCategory,
+} from "./connection.types";
+
 export type {
   BuildSigningMessageParams,
   BuildVerificationResultParams,
