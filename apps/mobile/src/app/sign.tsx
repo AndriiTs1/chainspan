@@ -22,7 +22,7 @@ export default function SignModal() {
 
 const styles = StyleSheet.create({
   content: {
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     paddingBottom: Spacing[32],
   },
 });
