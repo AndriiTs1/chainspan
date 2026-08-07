@@ -4,6 +4,7 @@ import { SymbolView } from 'expo-symbols';
 import type { AndroidSymbol, SFSymbol } from 'expo-symbols';
 import { Pressable, StyleSheet, View } from 'react-native';
 
+import { ChainSpanLogo } from '@/components/brand/chainspan-logo';
 import { AppText } from '@/components/ui/app-text';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
@@ -66,9 +67,12 @@ export default function DashboardScreen() {
   return (
     <Screen>
       <View style={styles.header}>
-        <AppText variant="caption" color="secondary">
-          ChainSpan
-        </AppText>
+        <View style={styles.brandRow}>
+          <ChainSpanLogo size={24} iconSize={13} />
+          <AppText variant="caption" color="secondary">
+            ChainSpan
+          </AppText>
+        </View>
         <AppText variant="display">Dashboard</AppText>
         <AppText variant="body" color="secondary">
           Production Web3 Platform
@@ -163,6 +167,11 @@ const styles = StyleSheet.create({
   header: {
     gap: Spacing[4],
     marginBottom: Spacing[8],
+  },
+  brandRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing[8],
   },
   section: {
     gap: Spacing[8],
